@@ -1,12 +1,152 @@
 <html>
-  <canvas id="myCanvas" width="726" height="726" style="border:1px solid #000000;"></canvas>
-  <script>
-  var c=document.getElementById("myCanvas");
-  var ctx=c.getContext("2d");
-  
-  var w = document.getElementById("myCanvas").getAttribute("width");
-  var h = document.getElementById("myCanvas").getAttribute("height");
-  ctx.fillStyle="#FF0000";
-  ctx.fillRect(20,20,150,100);
-  </script>
+	<canvas id="myCanvas" width="726" height="726" style="border:1px solid #000000;"></canvas>
+	<script type="text/javascript">
+			window.onerror=function(msg, url, linenumber){
+			 alert('Error message: '+msg+'\nURL: '+url+'\nLine Number: '+linenumber)
+			 return true
+			}
+	</script>
+	<script src=http://cdnjs.cloudflare.com/ajax/libs/seedrandom/2.4.0/seedrandom.min.js></script>
+	<script>
+Array.prototype.containsArray = function(val) {
+    var hash = {};
+    for(var i=0; i<this.length; i++) {
+        hash[this[i]] = i;
+    }
+    return hash.hasOwnProperty(val);
+}
+var c=document.getElementById("myCanvas");
+var ctx=c.getContext("2d");
+function randint(min, max){
+ return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+function dir(d){
+	var x=0;
+	var y=0;
+	if (d==0){
+		y=-1;
+	}
+	if (d==1){
+		x=1;
+	}
+	if (d==2){
+		y=1;
+	}
+	if (d==3){
+		x=-1;
+	}
+	return [x, y]
+}
+function invd(d){
+	if (d==0){
+		d=2;
+	}
+	else if (d==1){
+		d=3;
+	}
+	else if (d==2){
+		d=0;
+	}
+	else if (d==3){
+		d=1;
+	}
+	return d;
+}
+var x=0;
+var y=0;
+var s='test'
+/*for (i=0; i<5*5; i++){
+	for (j=0; j<5*5; j++){*/
+		var maze=
+[[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],
+[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],
+[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],
+[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],
+[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]];
+
+Math.seedrandom('0 0 test');
+
+//while (!finished){
+//for (a=0; a<10; a++){
+//function generate(maze){
+	var finished=false;
+	var f=false;
+	x=randint(0,4);
+	y=randint(0,4);
+	if (finished == false){
+	window.setInterval(function(){
+	
+	for (a=0; a<5; a++){
+		if(!maze[a].containsArray([0,0,0,0])){
+			f=true;
+		} else {
+			f=false;
+		}
+	}
+	finished=f;
+	di=randint(0,3);
+	if (!((x+dir(di)[0]<0 || x+dir(di)[0]>4)||(y+dir(di)[1]<0 || y+dir(di)[1]>4))){
+		if(maze[y+dir(di)[1]][x+dir(di)[0]]=='0,0,0,0'){
+						
+			d=dir(di);
+			maze[y][x][di]=1;
+			//alert(x+' '+y+' '+maze[y][x]);
+			x+=d[0];
+			y+=d[1];
+			maze[y][x][invd(di)]=1;
+			//alert(x+' '+y+' '+maze[y][x]);
+			maze = maze;
+
+		}
+	} else {
+		di=randint(0,3);
+	}
+	}, 1);}
+	alert(maze);
+alert(maze);
+alert(maze);
+alert(maze);
+alert(maze);
+alert(maze);
+//}
+//maze = generate(maze);
+//alert(maze);
+//draw(maze);
+/*	}
+}*/
+function draw(m){
+	var size=50;
+	JSON.stringify(m);
+	var c=document.getElementById("myCanvas");
+	var ctx=c.getContext("2d");
+	for (i=0; i<5; i++){
+		for (j=0; j<5; j++){
+			ctx.lineWidth = 1;
+			if (m[j][i][0]==0){
+				ctx.moveTo(i*size,j*size);
+				ctx.lineTo((i+1)*size,j*size);
+			}
+			ctx.stroke();
+			if (m[j][i][1]==0){
+				ctx.moveTo((i+1)*size,j*size);
+				ctx.lineTo((i+1)*size,(j+1)*size);
+			}
+			ctx.stroke();
+			if (m[j][i][2]==0){
+				ctx.moveTo(i*size,(j+1)*size);
+				ctx.lineTo((i+1)*size,(j+1)*size);
+			}
+			ctx.stroke();
+			if (m[j][i][1]==0){
+				ctx.moveTo(i*size,j*size);
+				ctx.lineTo(i*size,(j+1)*size);
+			}
+			ctx.stroke();
+
+		}
+	}
+}
+draw(maze);
+
+	</script>
 </html>
