@@ -55,8 +55,9 @@ function invd(d){
 var s='test'
 		
 
-Math.seedrandom('0 0 test');
+Math.seedrandom('0 0 est');
 function generate(){
+	var closed=[]
 	var maze=
 [[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],
 [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],
@@ -68,8 +69,11 @@ function generate(){
 	x=randint(0,4);
 	y=randint(0,4);
 	if (finished == false){
-	window.setInterval(function(){
-	
+	interval = setInterval(function(){
+	if (finished == true){
+		clearInterval(interval);
+		draw(maze);
+	}
 	for (a=0; a<5; a++){
 		if(!maze[a].containsArray([0,0,0,0])){
 			f=true;
@@ -87,13 +91,21 @@ function generate(){
 			//alert(x+' '+y+' '+maze[y][x]);
 			x+=d[0];
 			y+=d[1];
+			var xy=[x,y];
+			alert(x);
+			alert(y);
+			closed.push(xy);
 			maze[y][x][invd(di)]=1;
 			//alert(x+' '+y+' '+maze[y][x]);
-			draw(maze);
 
 		}
 	} else {
 		di=randint(0,3);
+		if ((maze[y+dir(0)[1]][x+dir(0)[0]]!='0,0,0,0')&&(maze[y+dir(1)[1]][x+dir(1)[0]]!='0,0,0,0')&&(maze[y+dir(2)[1]][x+dir(2)[0]]!='0,0,0,0')&&(maze[y+dir(3)[1]][x+dir(3)[0]]!='0,0,0,0')) {
+			closed.pop();
+			x=closed[closed.length][0];
+			y=closed[closed.length][1];
+		}
 	}
 	}, 1);}
 }
@@ -105,7 +117,7 @@ function draw(m){
 	var ctx=c.getContext("2d");
 	for (i=0; i<5; i++){
 		for (j=0; j<5; j++){
-			ctx.lineWidth = 1;
+			ctx.lineWidth = 2;
 			if (m[j][i][0]==0){
 				ctx.moveTo(i*size,j*size);
 				ctx.lineTo((i+1)*size,j*size);
@@ -130,7 +142,7 @@ function draw(m){
 		}
 	}
 }
-draw(maze);
+
 
 	</script>
 </html>
