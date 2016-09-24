@@ -52,64 +52,9 @@ function invd(d){
 	}
 	return d;
 }
-var s='test'
-		
-
+var s='test';
 Math.seedrandom('0 0 est');
-function generate(){
-	var closed=[]
-	var maze=
-[[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],
-[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],
-[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],
-[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],
-[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]];
-	var finished=false;
-	var f=false;
-	x=randint(0,4);
-	y=randint(0,4);
-	if (finished == false){
-	interval = setInterval(function(){
-	if (finished == true){
-		clearInterval(interval);
-		draw(maze);
-	}
-	for (a=0; a<5; a++){
-		if(!maze[a].containsArray([0,0,0,0])){
-			f=true;
-		} else {
-			f=false;
-		}
-	}
-	finished=f;
-	di=randint(0,3);
-	if (!((x+dir(di)[0]<0 || x+dir(di)[0]>4)||(y+dir(di)[1]<0 || y+dir(di)[1]>4))){
-		if(maze[y+dir(di)[1]][x+dir(di)[0]]=='0,0,0,0'){
-						
-			d=dir(di);
-			maze[y][x][di]=1;
-			//alert(x+' '+y+' '+maze[y][x]);
-			x+=d[0];
-			y+=d[1];
-			var xy=[x,y];
-			alert(x);
-			alert(y);
-			closed.push(xy);
-			maze[y][x][invd(di)]=1;
-			//alert(x+' '+y+' '+maze[y][x]);
 
-		}
-	} else {
-		di=randint(0,3);
-		if ((maze[y+dir(0)[1]][x+dir(0)[0]]!='0,0,0,0')&&(maze[y+dir(1)[1]][x+dir(1)[0]]!='0,0,0,0')&&(maze[y+dir(2)[1]][x+dir(2)[0]]!='0,0,0,0')&&(maze[y+dir(3)[1]][x+dir(3)[0]]!='0,0,0,0')) {
-			closed.pop();
-			x=closed[closed.length][0];
-			y=closed[closed.length][1];
-		}
-	}
-	}, 1);}
-}
-generate();
 function draw(m){
 	var size=50;
 	JSON.stringify(m);
