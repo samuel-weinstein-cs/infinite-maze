@@ -35,7 +35,7 @@ function dir(d){
 	if (d==3){
 		x=-1;
 	}
-	return [x, y]
+	return [x, y];
 }
 function invd(d){
 	if (d==0){
@@ -52,9 +52,20 @@ function invd(d){
 	}
 	return d;
 }
+function createmaze(){
+	
+}
 var s='test';
 Math.seedrandom('0 0 est');
-
+var maze=
+[[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],
+[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],
+[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],
+[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],
+[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]];
+function generate(maze){
+	
+}
 function draw(m){
 	var size=50;
 	JSON.stringify(m);
