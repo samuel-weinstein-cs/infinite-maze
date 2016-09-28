@@ -55,7 +55,7 @@ function invd(d){
 var s='test'
 		
 
-Math.seedrandom('0 0 est');
+Math.seedrandom('0 1 est');
 function generate(){
 	var closed=[]
 	var maze=
@@ -92,8 +92,8 @@ function generate(){
 			x+=d[0];
 			y+=d[1];
 			var xy=[x,y];
-			alert(x);
-			alert(y);
+			//alert(x);
+			//alert(y);
 			closed.push(xy);
 			maze[y][x][invd(di)]=1;
 			//alert(x+' '+y+' '+maze[y][x]);
@@ -107,6 +107,7 @@ function generate(){
 			y=closed[closed.length][1];
 		}
 	}
+	draw(maze)
 	}, 1);}
 }
 generate();
@@ -133,7 +134,7 @@ function draw(m){
 				ctx.lineTo((i+1)*size,(j+1)*size);
 			}
 			ctx.stroke();
-			if (m[j][i][1]==0){
+			if (m[j][i][3]==0){
 				ctx.moveTo(i*size,j*size);
 				ctx.lineTo(i*size,(j+1)*size);
 			}
