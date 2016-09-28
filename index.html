@@ -35,7 +35,7 @@ function dir(d){
 	if (d==3){
 		x=-1;
 	}
-	return [x, y]
+	return [x, y];
 }
 function invd(d){
 	if (d==0){
@@ -52,94 +52,114 @@ function invd(d){
 	}
 	return d;
 }
-var s='test'
-		
+var s='test';
+Math.seedrandom('0 0 est');
+function generate(maze,x,y,closed){
+	//draw(maze);
+	var d=randint(0,3)
+	if((y+dir(d)[1]>=0 && y+dir(d)[1]<=4) && (x+dir(d)[0]>=0 && x+dir(d)[0]<=4)){
+		if(maze[y+dir(d)[1]][x+dir(d)[0]]=='0,0,0,0'){
+			closed.push([x,y]);
+			maze[y][x][d]=1;
+			x+=dir(d)[0];
+			y+=dir(d)[1];
+			maze[y][x][invd(d)]=1;
+		}
+		var pop = false;
+		//alert('got here');
+		for (var i=0; i<=3; i++){
+			if(!((y+dir(i)[1]>=0 && y+dir(i)[1]<=4) && (x+dir(i)[0]>=0 && x+dir(i)[0]<=4))){
+				pop=true;
+			} else {
+				pop=false;
+				
+			}
+			try
+			{if(!(maze[y+dir(i)[1]][x+dir(i)[0]]=='0,0,0,0')){
+				pop=true;
+			} else {
+				pop=false;
+				break;
+			}
+			}catch(err){}
+		}
+		//alert(pop);
+		try{
+		if (pop == true){
+			//alert(closed);
+			x=closed[closed.length-1][0];
+			y=closed[closed.length-1][1];
+			closed.pop();
+		}
+		} catch(err) {
+			//draw(maze);	
+		}
 
-Math.seedrandom('0 1 est');
-function generate(){
+
+	}
+	return {maze : maze, x : x, y : y, closed : closed};
+}
+
+function createmaze(){
+	var x=randint(0,4);
+	var y=randint(0,4);
 	var closed=[]
+	var i = 0;
 	var maze=
 [[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],
 [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],
 [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],
 [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],
 [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]];
-	var finished=false;
-	var f=false;
-	x=randint(0,4);
-	y=randint(0,4);
-	if (finished == false){
-	interval = setInterval(function(){
-	if (finished == true){
-		clearInterval(interval);
+	//draw(maze);
+	//alert(i);
+	var interval = setInterval( function(){
+	var gen=generate(maze,x,y,closed);
+	maze=gen.maze;
+	x=gen.x;
+	y=gen.y;
+	closed=gen.closed;
+	i++
+	
+	//draw(maze);
+	if (i>100){
 		draw(maze);
+		window.clearInterval(interval);
 	}
-	for (a=0; a<5; a++){
-		if(!maze[a].containsArray([0,0,0,0])){
-			f=true;
-		} else {
-			f=false;
-		}
+	},1);
 	}
-	finished=f;
-	di=randint(0,3);
-	if (!((x+dir(di)[0]<0 || x+dir(di)[0]>4)||(y+dir(di)[1]<0 || y+dir(di)[1]>4))){
-		if(maze[y+dir(di)[1]][x+dir(di)[0]]=='0,0,0,0'){
-						
-			d=dir(di);
-			maze[y][x][di]=1;
-			//alert(x+' '+y+' '+maze[y][x]);
-			x+=d[0];
-			y+=d[1];
-			var xy=[x,y];
-			//alert(x);
-			//alert(y);
-			closed.push(xy);
-			maze[y][x][invd(di)]=1;
-			//alert(x+' '+y+' '+maze[y][x]);
-
-		}
-	} else {
-		di=randint(0,3);
-		if ((maze[y+dir(0)[1]][x+dir(0)[0]]!='0,0,0,0')&&(maze[y+dir(1)[1]][x+dir(1)[0]]!='0,0,0,0')&&(maze[y+dir(2)[1]][x+dir(2)[0]]!='0,0,0,0')&&(maze[y+dir(3)[1]][x+dir(3)[0]]!='0,0,0,0')) {
-			closed.pop();
-			x=closed[closed.length][0];
-			y=closed[closed.length][1];
-		}
-	}
-	draw(maze)
-	}, 1);}
-}
-generate();
+createmaze();
 function draw(m){
 	var size=50;
+	var w=size/2;
+	//var w=2;
 	JSON.stringify(m);
 	var c=document.getElementById("myCanvas");
 	var ctx=c.getContext("2d");
+	ctx.clearRect(0, 0, c.width, c.height);
 	for (i=0; i<5; i++){
 		for (j=0; j<5; j++){
-			ctx.lineWidth = 2;
+			ctx.lineWidth = w;
 			if (m[j][i][0]==0){
-				ctx.moveTo(i*size,j*size);
-				ctx.lineTo((i+1)*size,j*size);
+				ctx.moveTo(i*size-w/2,j*size);
+				ctx.lineTo((i+1)*size+w/2,j*size);
 			}
 			ctx.stroke();
 			if (m[j][i][1]==0){
-				ctx.moveTo((i+1)*size,j*size);
-				ctx.lineTo((i+1)*size,(j+1)*size);
+				ctx.moveTo((i+1)*size,j*size-w/2);
+				ctx.lineTo((i+1)*size,(j+1)*size+w/2);
 			}
 			ctx.stroke();
 			if (m[j][i][2]==0){
-				ctx.moveTo(i*size,(j+1)*size);
-				ctx.lineTo((i+1)*size,(j+1)*size);
+				ctx.moveTo(i*size-w/2,(j+1)*size);
+				ctx.lineTo((i+1)*size+w/2,(j+1)*size);
 			}
 			ctx.stroke();
 			if (m[j][i][3]==0){
-				ctx.moveTo(i*size,j*size);
-				ctx.lineTo(i*size,(j+1)*size);
+				ctx.moveTo(i*size,j*size-w/2);
+				ctx.lineTo(i*size,(j+1)*size+w/2);
 			}
 			ctx.stroke();
-
 		}
 	}
 }
