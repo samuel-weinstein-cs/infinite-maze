@@ -52,20 +52,35 @@ function invd(d){
 	}
 	return d;
 }
-function createmaze(){
-	
-}
 var s='test';
 Math.seedrandom('0 0 est');
-var maze=
+function generate(maze,x,y,closed){
+	var d=randint(0,3)
+	if((y+dir(d)[1]>=0 && y+dir(d)[1]<=4) && (x+dir(d)[0]>=0 && x+dir(d)[0]<=4)){
+		if(maze[y+dir(d)[1]][x+dir(d)[0]]=='0,0,0,0'){
+			maze[y][x][d]=1;
+			x+=dir(d)[0];
+			y+=dir(d)[1];
+			maze[y][x][invd(d)]=1;
+		}
+	}
+	return maze,x,y,closed;
+}
+function createmaze(){
+	var x=randint(0,4);
+	var y=randint(0,4);
+	var closed=[]
+	var maze=
 [[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],
 [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],
 [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],
 [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],
 [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]];
-function generate(maze){
-	
+	maze,x,y,closed=generate(maze,x,y,closed);
+	alert(maze);
+	draw(maze);
 }
+createmaze();
 function draw(m){
 	var size=50;
 	JSON.stringify(m);
@@ -89,7 +104,7 @@ function draw(m){
 				ctx.lineTo((i+1)*size,(j+1)*size);
 			}
 			ctx.stroke();
-			if (m[j][i][1]==0){
+			if (m[j][i][3]==0){
 				ctx.moveTo(i*size,j*size);
 				ctx.lineTo(i*size,(j+1)*size);
 			}
