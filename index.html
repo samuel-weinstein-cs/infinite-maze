@@ -55,61 +55,111 @@ function invd(d){
 var s='test';
 Math.seedrandom('0 0 est');
 function generate(maze,x,y,closed){
+	//draw(maze);
 	var d=randint(0,3)
 	if((y+dir(d)[1]>=0 && y+dir(d)[1]<=4) && (x+dir(d)[0]>=0 && x+dir(d)[0]<=4)){
 		if(maze[y+dir(d)[1]][x+dir(d)[0]]=='0,0,0,0'){
+			closed.push([x,y]);
 			maze[y][x][d]=1;
 			x+=dir(d)[0];
 			y+=dir(d)[1];
 			maze[y][x][invd(d)]=1;
 		}
+		var pop = false;
+		//alert('got here');
+		for (var i=0; i<=3; i++){
+			if(!((y+dir(i)[1]>=0 && y+dir(i)[1]<=4) && (x+dir(i)[0]>=0 && x+dir(i)[0]<=4))){
+				pop=true;
+			} else {
+				pop=false;
+				
+			}
+			try
+			{if(!(maze[y+dir(i)[1]][x+dir(i)[0]]=='0,0,0,0')){
+				pop=true;
+			} else {
+				pop=false;
+				break;
+			}
+			}catch(err){}
+		}
+		//alert(pop);
+		try{
+		if (pop == true){
+			//alert(closed);
+			x=closed[closed.length-1][0];
+			y=closed[closed.length-1][1];
+			closed.pop();
+		}
+		} catch(err) {
+			//draw(maze);	
+		}
+
+
 	}
-	return maze,x,y,closed;
+	return {maze : maze, x : x, y : y, closed : closed};
 }
+
 function createmaze(){
 	var x=randint(0,4);
 	var y=randint(0,4);
 	var closed=[]
+	var i = 0;
 	var maze=
 [[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],
 [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],
 [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],
 [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],
 [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]];
-	maze,x,y,closed=generate(maze,x,y,closed);
-	alert(maze);
-	draw(maze);
-}
+	//draw(maze);
+	//alert(i);
+	var interval = setInterval( function(){
+	var gen=generate(maze,x,y,closed);
+	maze=gen.maze;
+	x=gen.x;
+	y=gen.y;
+	closed=gen.closed;
+	i++
+	
+	//draw(maze);
+	if (i>100){
+		draw(maze);
+		window.clearInterval(interval);
+	}
+	},1);
+	}
 createmaze();
 function draw(m){
 	var size=50;
+	var w=size/2;
+	//var w=2;
 	JSON.stringify(m);
 	var c=document.getElementById("myCanvas");
 	var ctx=c.getContext("2d");
+	ctx.clearRect(0, 0, c.width, c.height);
 	for (i=0; i<5; i++){
 		for (j=0; j<5; j++){
-			ctx.lineWidth = 2;
+			ctx.lineWidth = w;
 			if (m[j][i][0]==0){
-				ctx.moveTo(i*size,j*size);
-				ctx.lineTo((i+1)*size,j*size);
+				ctx.moveTo(i*size-w/2,j*size);
+				ctx.lineTo((i+1)*size+w/2,j*size);
 			}
 			ctx.stroke();
 			if (m[j][i][1]==0){
-				ctx.moveTo((i+1)*size,j*size);
-				ctx.lineTo((i+1)*size,(j+1)*size);
+				ctx.moveTo((i+1)*size,j*size-w/2);
+				ctx.lineTo((i+1)*size,(j+1)*size+w/2);
 			}
 			ctx.stroke();
 			if (m[j][i][2]==0){
-				ctx.moveTo(i*size,(j+1)*size);
-				ctx.lineTo((i+1)*size,(j+1)*size);
+				ctx.moveTo(i*size-w/2,(j+1)*size);
+				ctx.lineTo((i+1)*size+w/2,(j+1)*size);
 			}
 			ctx.stroke();
 			if (m[j][i][3]==0){
-				ctx.moveTo(i*size,j*size);
-				ctx.lineTo(i*size,(j+1)*size);
+				ctx.moveTo(i*size,j*size-w/2);
+				ctx.lineTo(i*size,(j+1)*size+w/2);
 			}
 			ctx.stroke();
-
 		}
 	}
 }
