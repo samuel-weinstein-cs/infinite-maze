@@ -129,7 +129,7 @@ function createmaze(){
 	},1);
 	}
 createmaze();
-function draw(m){
+function draw(m,x,y){
 	var size=50;
 	var w=size/2;
 	//var w=2;
@@ -141,29 +141,27 @@ function draw(m){
 		for (j=0; j<5; j++){
 			ctx.lineWidth = w;
 			if (m[j][i][0]==0){
-				ctx.moveTo(i*size-w/2,j*size);
-				ctx.lineTo((i+1)*size+w/2,j*size);
+				ctx.moveTo(i*size-w/2+x*size,j*size+y*size);
+				ctx.lineTo((i+1)*size+w/2+x*size,j*size+y*size);
 			}
 			ctx.stroke();
 			if (m[j][i][1]==0){
-				ctx.moveTo((i+1)*size,j*size-w/2);
-				ctx.lineTo((i+1)*size,(j+1)*size+w/2);
+				ctx.moveTo((i+1)*size+x*size,j*size-w/2+y*size);
+				ctx.lineTo((i+1)*size+x*size,(j+1)*size+w/2+y*size);
 			}
 			ctx.stroke();
 			if (m[j][i][2]==0){
-				ctx.moveTo(i*size-w/2,(j+1)*size);
-				ctx.lineTo((i+1)*size+w/2,(j+1)*size);
+				ctx.moveTo(i*size-w/2+x*size,(j+1)*size+y*size);
+				ctx.lineTo((i+1)*size+w/2+x*size,(j+1)*size+y*size);
 			}
 			ctx.stroke();
 			if (m[j][i][3]==0){
-				ctx.moveTo(i*size,j*size-w/2);
-				ctx.lineTo(i*size,(j+1)*size+w/2);
+				ctx.moveTo(i*size+x*size,j*size-w/2+y*size);
+				ctx.lineTo(i*size+x*size,(j+1)*size+w/2+y*size);
 			}
 			ctx.stroke();
 		}
 	}
 }
-
-
 	</script>
 </html>
