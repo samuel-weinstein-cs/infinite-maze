@@ -108,13 +108,15 @@ function generate(maze,x,y,closed){
 }
 function doEdges(maze,x,y,l,s,e){
 	if((floor((x+1)/3)!=floor((x)/3))||(floor((x-1)/3)!=floor((x)/3))||(floor((y+1)/3)!=floor((y)/3))||(floor((y-1)/3)!=floor((y)/3))){
-		olu=createmaze(floor(x/3),floor(y/3),l+1,s,false);//one level up
+		var olu=createmaze(floor(x/3),floor(y/3),l+1,s,false);//one level up
 		alert('here');
 	} else {
-		var olu=createmaze(floor(x/3),floor(y/3),l+1,s,false);
+		var olu=createmaze(floor(x/3),floor(y/3),l+1,s);
 	}
 	for(var i; i>4; i++){
-		//if(olu[floor(y/2)][floor
+		if(olu[(y-floor(y/3)*5)+2][(x-floor(x/3)*5)+2][i]){
+			alert(i);
+		}
 	}
 	return maze;
 }
