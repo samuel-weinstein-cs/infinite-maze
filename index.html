@@ -101,17 +101,15 @@ function generate(maze,x,y,closed){
 		} catch(err) {
 			fin=true;	
 		}
-
-
 	}
 	return {maze : maze, x : x, y : y, closed : closed, fin : fin};
 }
 function doEdges(maze,x,y,l,s,e){
-	if((floor((x+1)/3)!=floor((x)/3))||(floor((x-1)/3)!=floor((x)/3))||(floor((y+1)/3)!=floor((y)/3))||(floor((y-1)/3)!=floor((y)/3))){
-		var olu=createmaze(floor(x/3),floor(y/3),l+1,s,false);//one level up
-		alert('here');
+	if((floor((x+1)/3)!=floor(x/3))||(floor((x-1)/3)!=floor(x/3))||(floor((y+1)/3)!=floor(y/3))||(floor((y-1)/3)!=floor(y/3))){
+		var olu=createmaze(floor(x/3),floor(y/3),l+1,s);//one level up
+		//alert('here');
 	} else {
-		var olu=createmaze(floor(x/3),floor(y/3),l+1,s);
+		var olu=createmaze(floor(x/3),floor(y/3),l+1,s,false);
 	}
 	for(var i; i>4; i++){
 		if(olu[(y-floor(y/3)*5)+2][(x-floor(x/3)*5)+2][i]){
@@ -141,7 +139,7 @@ function createmaze(sx,sy,sl,s,e){
 	var interval = setInterval( function(){
 	var gen=generate(maze,x,y,closed);
 	maze=gen.maze;
-	x=gen.x;
+	x=gen.x;  
 	y=gen.y;
 	closed=gen.closed;
 	i++
@@ -161,12 +159,10 @@ function createmaze(sx,sy,sl,s,e){
 	}
 	},0);
 }
-
-createmaze(0,0,0,'test');
-//createmaze(0,1,0,'test');
-//createmaze(1,0,0,'test');
-//createmaze(1,1,0,'test');
-
+createmaze(2,0,0,'test');
+createmaze(0,1,0,'test');
+createmaze(1,0,0,'test');
+createmaze(1,1,0,'test');
 function draw(m,x,y){
 	var size=35;
 	//var w=size/2;
