@@ -1,5 +1,5 @@
 <html>
-	<canvas id="myCanvas" width="700" height="700" style="border:1px solid #000000;"></canvas>
+	<canvas id="myCanvas" width="500" height="500" style="border:1px solid #000000;"></canvas>
 	<script type="text/javascript">
 			window.onerror=function(msg, url, linenumber){
 			 alert('Error message: '+msg+'\nURL: '+url+'\nLine Number: '+linenumber)
@@ -8,6 +8,7 @@
 	</script>
 	<script src=http://cdnjs.cloudflare.com/ajax/libs/seedrandom/2.4.0/seedrandom.min.js></script>
 	<script>
+//alert('start!');
 Array.prototype.containsArray = function(val) {
     var hash = {};
     for(var i=0; i<this.length; i++) {
@@ -105,20 +106,78 @@ function generate(maze,x,y,closed){
 	return {maze : maze, x : x, y : y, closed : closed, fin : fin};
 }
 function doEdges(maze,x,y,l,s,e){
+	//alert(createmaze(1,3,0,s));
+	var olu=[];
+	//alert(x+' '+y+' '+l);
 	if((floor((x+1)/3)!=floor(x/3))||(floor((x-1)/3)!=floor(x/3))||(floor((y+1)/3)!=floor(y/3))||(floor((y-1)/3)!=floor(y/3))){
-		var olu=createmaze(floor(x/3),floor(y/3),l+1,s);//one level up
+		olu=createmaze(floor(x/3),floor(y/3),l+1,s);//one level up
+		//alert(olu);
 		//alert('here');
 	} else {
-		var olu=createmaze(floor(x/3),floor(y/3),l+1,s,false);
+		//alert('there');
+		olu=createmaze(floor(x/3),floor(y/3),l+1,s,false);
+		//alert(olu);
 	}
-	for(var i; i>4; i++){
+	/*alert(floor(x/3));
+	alert(floor(y/3));
+	alert(l+1);
+	alert(s);*/
+	for(i=0; i<4; i++){
+		//alert('got')
 		if(olu[(y-floor(y/3)*5)+2][(x-floor(x/3)*5)+2][i]){
-			alert(i);
+			//alert(x+' '+y);
+			if(i==0){
+				var otherx=x;
+				var othery=y-1;
+			}
+			if(i==1){
+				var otherx=x+1;
+				var othery=y;
+			}
+			if(i==2){
+				var otherx=x;
+				var othery=y+1;
+			}
+			if(i==3){
+				var otherx=x-1;
+				var othery=y;
+			}
+			//alert(Math.sqrt(Math.pow(otherx,2)+Math.pow(othery,2))+' '+Math.sqrt(Math.pow(x,2)+Math.pow(y,2)))
+			if(Math.sqrt(Math.pow(otherx,2)+Math.pow(othery,2))>Math.sqrt(Math.pow(x,2)+Math.pow(y,2)))
+{
+				seed=(i+' '+x+' '+y+' '+otherx+' '+othery+' '+l+' '+s);
+				//alert('closer')
+			} else {
+				//alert('farther')
+				seed=(invd(i)+' '+otherx+' '+othery+' '+x+' '+y+' '+l+' '+s);
+			}
+			
+			//alert(seed);
+			Math.seedrandom(seed);
+			var point=randint(0,4);
+			if(i==0){
+				maze[0][point][i]=1;
+			}
+			if(i==1){
+				maze[point][4][i]=1;
+			}
+			if(i==2){
+				maze[4][point][i]=1;
+			}
+			if(i==3){
+				maze[point][0][i]=1;
+			}
+
 		}
 	}
+	
+	//alert(olu);
+	//Math.seedrandom(x+' '+y+' '+l+' '+s+' n');
+	//maze[0][randint(0,4)][0]=1;
 	return maze;
 }
-function createmaze(sx,sy,sl,s,e){
+function createmaze(sx,sy,sl,s,e,ox,oy){
+	var m=0;
 	if(typeof(e) === "undefined") {
 		e=true;
 	}
@@ -126,7 +185,7 @@ function createmaze(sx,sy,sl,s,e){
 	Math.seedrandom(seed);
 	var x=randint(0,4);
 	var y=randint(0,4);
-	var closed=[]
+	var closed=[];
 	var i = 0;
 	var maze=
 [[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],
@@ -136,7 +195,8 @@ function createmaze(sx,sy,sl,s,e){
 [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]];
 	//draw(maze);
 	//alert(i);
-	var interval = setInterval( function(){
+	setTimeout(jsuks(),0);
+	function jsuks(){
 	var gen=generate(maze,x,y,closed);
 	maze=gen.maze;
 	x=gen.x;  
@@ -150,21 +210,51 @@ function createmaze(sx,sy,sl,s,e){
 			maze=doEdges(maze,sx,sy,sl,s,e);
 		}
 		if (sl==0){
-			draw(maze,sx*5+7.5,sy*5+7.5);
+			draw(maze,sx,sy,ox,oy);
+			//return(maze);
+			
 		} else {
-			window.clearInterval(interval);
-			return maze;
+			//return(maze);
 		}
+		//alert('what');
 		window.clearInterval(interval);
+		return(maze);
+		m=maze;
+		//alert(m);
+		//alert(maze);
+		
 	}
-	},0);
+	var interval = setTimeout(jsuks(),0);
+	}
+	return jsuks();
+	
 }
-createmaze(2,0,0,'test');
-createmaze(0,1,0,'test');
-createmaze(1,0,0,'test');
-createmaze(1,1,0,'test');
-function draw(m,x,y){
-	var size=35;
+//alert(createmaze(2,0,1,s,false));
+///*
+var x=0;
+var y=0;
+var i=-1;
+var j=-1;
+var ini=setInterval(function(){
+	var inj=setInterval(function(){
+		createmaze(i,j,0,s,true,0,0);
+		j++
+		//if(j>1){ inj.clearInterval();}
+	},10);
+	i++
+	//if(i>1){ ini.clearInterval();}
+},10);
+}//*/
+/*
+createmaze(0,0,0,s,true,0,0);
+createmaze(1,0,0,s,true,0,0);
+//*/
+function draw(m,x,y,ox,oy){
+	x*=5
+	y*=5
+	x+=ox+5;
+	y+=oy+5;
+	var size=100*(1/3);
 	//var w=size/2;
 	var w=1;
 	JSON.stringify(m);
@@ -199,3 +289,4 @@ function draw(m,x,y){
 }
 	</script>
 </html>
+
