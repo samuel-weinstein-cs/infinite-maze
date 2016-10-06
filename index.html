@@ -109,22 +109,22 @@ function doEdges(maze,x,y,l,s,e){
 	//alert(createmaze(1,3,0,s));
 	var olu=[];
 	//alert(x+' '+y+' '+l);
-	if((floor((x+1)/3)!=floor(x/3))||(floor((x-1)/3)!=floor(x/3))||(floor((y+1)/3)!=floor(y/3))||(floor((y-1)/3)!=floor(y/3))){
-		olu=createmaze(floor(x/3),floor(y/3),l+1,s);//one level up
+	if((Math.floor(((x+2)+1)/5)!=Math.floor((x+2)/5))||(Math.floor(((x+2)-1)/5)!=Math.floor((x+2)/5))||(Math.floor(((y+2)+1)/5)!=Math.floor((y+2)/5))||(Math.floor(((y+2)-1)/5)!=Math.floor((y+2)/5))){
+		olu=createmaze(Math.floor((x+2)/5),Math.floor((y+2)/5),l+1,s);//one level up
 		//alert(olu);
 		//alert('here');
 	} else {
 		//alert('there');
-		olu=createmaze(floor(x/3),floor(y/3),l+1,s,false);
+		olu=createmaze(Math.floor((x+2)/5),Math.floor((y+2)/5),l+1,s,false);
 		//alert(olu);
 	}
-	/*alert(floor(x/3));
-	alert(floor(y/3));
+	/*alert(Math.floor((x+2)/5));
+	alert(Math.floor((y+2)/5));
 	alert(l+1);
 	alert(s);*/
 	for(i=0; i<4; i++){
 		//alert('got')
-		if(olu[(y-floor(y/3)*5)+2][(x-floor(x/3)*5)+2][i]){
+		if(olu[(y-Math.floor((y+2)/5)*5)+2][(Math.floor((x+2)/5)*5)+2][i]){
 			//alert(x+' '+y);
 			if(i==0){
 				var otherx=x;
@@ -233,18 +233,16 @@ function createmaze(sx,sy,sl,s,e,ox,oy){
 ///*
 var x=0;
 var y=0;
-var i=-1;
-var j=-1;
-var ini=setInterval(function(){
-	var inj=setInterval(function(){
-		createmaze(i,j,0,s,true,0,0);
-		j++
-		//if(j>1){ inj.clearInterval();}
-	},10);
-	i++
-	//if(i>1){ ini.clearInterval();}
-},10);
-}//*/
+createmaze(Math.floor((x+2)/5)-1,Math.floor((y+2)/5)-1,0,s,true,-x,-y);
+createmaze(Math.floor((x+2)/5),Math.floor((y+2)/5)-1,0,s,true,-x,-y);
+createmaze(Math.floor((x+2)/5)+1,Math.floor((y+2)/5)-1,0,s,true,-x,-y);
+createmaze(Math.floor((x+2)/5)-1,Math.floor((y+2)/5),0,s,true,-x,-y);
+createmaze(Math.floor((x+2)/5),Math.floor((y+2)/5),0,s,true,-x,-y);
+createmaze(Math.floor((x+2)/5)+1,Math.floor((y+2)/5),0,s,true,-x,-y);
+createmaze(Math.floor((x+2)/5)-1,Math.floor((y+2)/5)+1,0,s,true,-x,-y);
+createmaze(Math.floor((x+2)/5),Math.floor((y+2)/5)+1,0,s,true,-x,-y);
+createmaze(Math.floor((x+2)/5)+1,Math.floor((y+2)/5)+1,0,s,true,-x,-y);
+		
 /*
 createmaze(0,0,0,s,true,0,0);
 createmaze(1,0,0,s,true,0,0);
@@ -286,7 +284,8 @@ function draw(m,x,y,ox,oy){
 			ctx.stroke();
 		}
 	}
+	ctx.fillStyle=("#ff0000");
+	ctx.fillRect(234, 234, 32, 32);
 }
 	</script>
 </html>
-
