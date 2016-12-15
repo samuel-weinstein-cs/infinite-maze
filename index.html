@@ -60,7 +60,6 @@ function invd(d){
 	}
 	return d;
 }
-var s='test';
 function generate(maze,x,y,closed){
 	//draw(maze);
 	var fin=false;
@@ -167,7 +166,6 @@ function doEdges(maze,x,y,l,s,e){
 			if(i==3){
 				maze[point][0][i]=1;
 			}
-
 		}
 	}
 	
@@ -195,7 +193,7 @@ function createmaze(sx,sy,sl,s,e,ox,oy){
 [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]];
 	//draw(maze);
 	//alert(i);
-	setTimeout(jsuks(),0);
+	setTimeout(jsuks(),1);
 	function jsuks(){
 	var gen=generate(maze,x,y,closed);
 	maze=gen.maze;
@@ -205,16 +203,20 @@ function createmaze(sx,sy,sl,s,e,ox,oy){
 	i++
 	//draw(maze);
 	if (gen.fin){
+
+draw(maze,sx,sy,ox,oy); 
 		//alert(e+' '+sl);
+
 		if(e){
 			maze=doEdges(maze,sx,sy,sl,s,e);
-		}
+		}//draw(maze,sx,sy,ox,oy); 
 		if (sl==0){
-			draw(maze,sx,sy,ox,oy);
+			//draw(maze,sx,sy,ox,oy);
 			//return(maze);
 			
 		} else {
 			//return(maze);
+
 		}
 		//alert('what');
 		window.clearInterval(interval);
@@ -224,28 +226,25 @@ function createmaze(sx,sy,sl,s,e,ox,oy){
 		//alert(maze);
 		
 	}
-	var interval = setTimeout(jsuks(),0);
+	var interval = setTimeout(jsuks(),1);
 	}
 	return jsuks();
 	
 }
 //alert(createmaze(2,0,1,s,false));
 ///*
-var x=0;
-var y=0;
-createmaze(Math.floor((x+2)/5)-1,Math.floor((y+2)/5)-1,0,s,true,-x,-y);
-createmaze(Math.floor((x+2)/5),Math.floor((y+2)/5)-1,0,s,true,-x,-y);
-createmaze(Math.floor((x+2)/5)+1,Math.floor((y+2)/5)-1,0,s,true,-x,-y);
-createmaze(Math.floor((x+2)/5)-1,Math.floor((y+2)/5),0,s,true,-x,-y);
+var s="test";
+var x=0*5;
+var y=0*5;
+//createmaze(x,y,0,s,true,-x*5,-y*5);
 createmaze(Math.floor((x+2)/5),Math.floor((y+2)/5),0,s,true,-x,-y);
-createmaze(Math.floor((x+2)/5)+1,Math.floor((y+2)/5),0,s,true,-x,-y);
-createmaze(Math.floor((x+2)/5)-1,Math.floor((y+2)/5)+1,0,s,true,-x,-y);
-createmaze(Math.floor((x+2)/5),Math.floor((y+2)/5)+1,0,s,true,-x,-y);
-createmaze(Math.floor((x+2)/5)+1,Math.floor((y+2)/5)+1,0,s,true,-x,-y);
+
+
+/*
+
+//*/
 		
 /*
-createmaze(0,0,0,s,true,0,0);
-createmaze(1,0,0,s,true,0,0);
 //*/
 function draw(m,x,y,ox,oy){
 	x*=5
