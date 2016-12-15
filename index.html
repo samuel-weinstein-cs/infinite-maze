@@ -109,7 +109,7 @@ function doEdges(maze,x,y,l,s,e){
 	var olu=[];
 	//alert(x+' '+y+' '+l);
 	if((Math.floor(((x+2)+1)/5)!=Math.floor((x+2)/5))||(Math.floor(((x+2)-1)/5)!=Math.floor((x+2)/5))||(Math.floor(((y+2)+1)/5)!=Math.floor((y+2)/5))||(Math.floor(((y+2)-1)/5)!=Math.floor((y+2)/5))){
-		olu=createmaze(Math.floor((x+2)/5),Math.floor((y+2)/5),l+1,s);//one level up
+		olu=createmaze(Math.floor((x+2)/5),Math.floor((y+2)/5),l+1,s,true);//one level up
 		//alert(olu);
 		//alert('here');
 	} else {
@@ -121,7 +121,7 @@ function doEdges(maze,x,y,l,s,e){
 	alert(Math.floor((y+2)/5));
 	alert(l+1);
 	alert(s);*/
-	for(i=0; i<4; i++){
+	for(i=0; i<=3; i++){
 		//alert('got')
 		if(olu[(y-Math.floor((y+2)/5)*5)+2][(Math.floor((x+2)/5)*5)+2][i]){
 			//alert(x+' '+y);
@@ -176,9 +176,6 @@ function doEdges(maze,x,y,l,s,e){
 }
 function createmaze(sx,sy,sl,s,e,ox,oy){
 	var m=0;
-	if(typeof(e) === "undefined") {
-		e=true;
-	}
 	var seed = sx+' '+sy+' '+sl+' '+s;
 	Math.seedrandom(seed);
 	var x=randint(0,4);
@@ -203,27 +200,23 @@ function createmaze(sx,sy,sl,s,e,ox,oy){
 	i++
 	//draw(maze);
 	if (gen.fin){
-
-draw(maze,sx,sy,ox,oy); 
+document.writeln("gen'd: "+sx+' '+sy+' '+sl+'.');
+		//draw(maze,sx,sy,ox,oy); 
 		//alert(e+' '+sl);
-
+if(sl==0){document.writeln(maze)};
 		if(e){
 			maze=doEdges(maze,sx,sy,sl,s,e);
-		}//draw(maze,sx,sy,ox,oy); 
+
+		} 
 		if (sl==0){
-			//draw(maze,sx,sy,ox,oy);
+			draw(maze,sx,sy,ox,oy);
+document.writeln("got here");
 			//return(maze);
 			
-		} else {
-			//return(maze);
-
 		}
-		//alert('what');
 		window.clearInterval(interval);
 		return(maze);
-		m=maze;
-		//alert(m);
-		//alert(maze);
+;
 		
 	}
 	var interval = setTimeout(jsuks(),1);
@@ -233,9 +226,15 @@ draw(maze,sx,sy,ox,oy);
 }
 //alert(createmaze(2,0,1,s,false));
 ///*
-var s="test";
-var x=0*5;
+
+var s="j";
+var x=1*5;
 var y=0*5;
+var c=document.getElementById("myCanvas");
+var ctx=c.getContext("2d");
+ctx.clearRect(0, 0, c.width, c.height);
+ctx.font = "30px Arial";
+ctx.fillText(Math.floor((x+2)/5)+" "+Math.floor((y+2)/5),4,25)
 //createmaze(x,y,0,s,true,-x*5,-y*5);
 createmaze(Math.floor((x+2)/5),Math.floor((y+2)/5),0,s,true,-x,-y);
 
@@ -258,6 +257,8 @@ function draw(m,x,y,ox,oy){
 	var c=document.getElementById("myCanvas");
 	var ctx=c.getContext("2d");
 	ctx.clearRect(0, 0, c.width, c.height);
+ctx.font = "30px Arial";
+ctx.fillText(Math.floor((-ox+2)/5)+" "+Math.floor((-oy+2)/5),4,25)
 	for (i=0; i<5; i++){
 		for (j=0; j<5; j++){
 			ctx.lineWidth = w;
