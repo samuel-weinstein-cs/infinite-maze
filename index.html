@@ -10,13 +10,13 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	<script>
 //alert('start!');
-Array.prototype.containsArray = function(val) {
+/*Array.prototype.containsArray = function(val) {
     var hash = {};
     for(var i=0; i<this.length; i++) {
-        hash[this[i]] = i;
+        hash[this[i]]c = i;
     }
     return hash.hasOwnProperty(val);
-}
+}*/
 var c=document.getElementById("myCanvas");
 var ctx=c.getContext("2d");
 function randint(min, max){
@@ -106,12 +106,45 @@ function generate(maze,x,y,closed){
 	return {maze : maze, x : x, y : y, closed : closed, fin : fin};
 }
 function doEdges(maze,x,y,l,s,e){
-	var olu = createmaze(Math.floor((x+2)/5),Math.floor((y+2)/5),l+1,s,false);
-    /*if(olu === undefined){alert(olu);}
-	if(olu[2-(Math.floor((y+2)/5)*5-y)][2-(Math.floor((x+2)/5)*5-x)][0]==1){maze[0][2][0]=1;}
-	if(olu[2-(Math.floor((y+2)/5)*5-y)][2-(Math.floor((x+2)/5)*5-x)][1]==1){maze[2][4][1]=1;}
-	if(olu[2-(Math.floor((y+2)/5)*5-y)][2-(Math.floor((x+2)/5)*5-x)][2]==1){maze[4][2][2]=1;}
-	if(olu[2-(Math.floor((y+2)/5)*5-y)][2-(Math.floor((x+2)/5)*5-x)][3]==1){maze[2][0][3]=1;}*/
+	if((Math.floor((x+2)/5)!=Math.floor((x+1+2)/5))||(Math.floor((x+2)/5)!=Math.floor((x-1+2)/5))||(Math.floor((y+2)/5)!=Math.floor((y+1+2)/5))||(Math.floor((y+2)/5)!=Math.floor((y-1+2)/5))){
+		var olu = createmaze(Math.floor((x+2)/5),Math.floor((y+2)/5),l+1,s,true);
+        } else {
+        	var olu = createmaze(Math.floor((x+2)/5),Math.floor((y+2)/5),l+1,s,false);
+        }
+    if(olu === undefined){alert(olu);}
+	if(olu[2-(Math.floor((y+2)/5)*5-y)][2-(Math.floor((x+2)/5)*5-x)][0]==1){
+        //Math.seedrandom(x+' '+y+' '+l+' '+s+' 0');
+    	if(Math.sqrt(Math.pow(x,2)+Math.pow(y,2))<Math.sqrt(Math.pow(x,2)+Math.pow((y-1),2))){
+        	Math.seedrandom(x+' '+y+' '+x+' '+(y-1)+' '+l+' '+s);
+        } else {
+        	Math.seedrandom(x+' '+(y-1)+' '+x+' '+y+' '+l+' '+s);
+        }
+        maze[0][randint(0,4)][0]=1;
+    }
+	if(olu[2-(Math.floor((y+2)/5)*5-y)][2-(Math.floor((x+2)/5)*5-x)][1]==1){
+    	if(Math.sqrt(Math.pow(x,2)+Math.pow(y,2))<Math.sqrt(Math.pow((x+1),2)+Math.pow(y,2))){
+        	Math.seedrandom(x+' '+y+' '+(x+1)+' '+y+' '+l+' '+s);
+        } else {
+        	Math.seedrandom((x+1)+' '+y+' '+x+' '+y+' '+l+' '+s);
+        }
+    	maze[randint(0,4)][4][1]=1;
+    }
+	if(olu[2-(Math.floor((y+2)/5)*5-y)][2-(Math.floor((x+2)/5)*5-x)][2]==1){
+    	if(Math.sqrt(Math.pow(x,2)+Math.pow(y,2))<Math.sqrt(Math.pow(x,2)+Math.pow((y+1),2))){
+        	Math.seedrandom(x+' '+y+' '+x+' '+(y+1)+' '+l+' '+s);
+        } else {
+        	Math.seedrandom(x+' '+(y+1)+' '+x+' '+y+' '+l+' '+s);
+        }
+    	maze[4][randint(0,4)][2]=1;
+    }
+	if(olu[2-(Math.floor((y+2)/5)*5-y)][2-(Math.floor((x+2)/5)*5-x)][3]==1){
+    	if(Math.sqrt(Math.pow(x,2)+Math.pow(y,2))<Math.sqrt(Math.pow((x-1),2)+Math.pow(y,2))){
+        	Math.seedrandom(x+' '+y+' '+(x-1)+' '+y+' '+l+' '+s);
+        } else {
+        	Math.seedrandom((x-1)+' '+y+' '+x+' '+y+' '+l+' '+s);
+        }
+    	maze[randint(0,4)][0][3]=1;
+    }
     //alert(olu);
     //ctx.font="10px Arial";
     //ctx.clearRect(0, 0, c.width, c.height);
@@ -125,7 +158,7 @@ function createmaze(sx,sy,sl,s,e,ox,oy){
 	var x=randint(0,4);
 	var y=randint(0,4);
 	var closed=[];
-	var i = 0;
+
 	var maze=
 [[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],
 [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],
@@ -133,20 +166,16 @@ function createmaze(sx,sy,sl,s,e,ox,oy){
 [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],
 [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]];
 	//draw(maze);
-	//alert(i);
-	setTimeout(jsuks(),1);
-	function jsuks(){
+
 	var gen=generate(maze,x,y,closed);
-	maze=gen.maze;
-	x=gen.x;  
-	y=gen.y;
-	closed=gen.closed;
-	i++
-	//draw(maze);
-	if (gen.fin){
-//document.writeln("gen'd: "+sx+' '+sy+' '+sl+'.');
-		//draw(maze,sx,sy,ox,oy); 
-		//alert(e+' '+sl);
+	while(gen.fin==false){
+    	gen=generate(maze,x,y,closed);
+    	maze=gen.maze;
+    	x=gen.x;  
+    	y=gen.y;
+    	closed=gen.closed;
+	}
+
 		if(e){
 			maze=doEdges(maze,sx,sy,sl,s,e);
 		} 
@@ -157,14 +186,10 @@ function createmaze(sx,sy,sl,s,e,ox,oy){
 			//return(maze);
 			
 		}
-		window.clearInterval(interval);
-		return(maze);
-;
+		//window.clearInterval(interval);
 		
-	}
-	var interval = setTimeout(jsuks(),1);
-	}
-	return jsuks();
+	//var interval = setTimeout(jsuks(),1);
+    return(maze);
 	
 }
 //alert(createmaze(2,0,1,s,false));
@@ -172,7 +197,7 @@ function createmaze(sx,sy,sl,s,e,ox,oy){
 var x=0;
 var y=0;
 //var s=Math.random();
-var s = "sam weinstein";
+var s = 10;
 $(document).ready(function(){
 	$(document).keydown(function(event){
     //document.write("hello");
@@ -220,7 +245,7 @@ $(document).ready(function(){
 function draw(m,x,y,ox,oy){
 	x*=5
 	y*=5
-    siz=3;
+    siz=2;
 	x+=ox+2.5*siz-2.5;
 	y+=oy+2.5*siz-2.5;
 	var size=100*(1/siz);
@@ -263,7 +288,7 @@ function draw(m,x,y,ox,oy){
 	}
     ctx.closePath();
 	ctx.fillStyle=("#ff0000");
-	//ctx.fillRect(226, 226, 48, 48);
+	ctx.fillRect(226, 226, 48, 48);
     //ctx.fillRect(c.width/2, c.height/2,siz*98,siz*98)
 }
 	</script>
