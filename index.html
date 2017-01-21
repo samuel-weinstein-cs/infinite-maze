@@ -10,13 +10,13 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	<script>
 //alert('start!');
-/*Array.prototype.containsArray = function(val) {
+Array.prototype.containsArray = function(val) {
     var hash = {};
     for(var i=0; i<this.length; i++) {
-        hash[this[i]]c = i;
+        hash[this[i]] = i;
     }
     return hash.hasOwnProperty(val);
-}*/
+}
 var c=document.getElementById("myCanvas");
 var ctx=c.getContext("2d");
 function randint(min, max){
@@ -158,7 +158,6 @@ function createmaze(sx,sy,sl,s,e,ox,oy){
 	var x=randint(0,4);
 	var y=randint(0,4);
 	var closed=[];
-
 	var maze=
 [[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],
 [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],
@@ -166,7 +165,6 @@ function createmaze(sx,sy,sl,s,e,ox,oy){
 [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],
 [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]];
 	//draw(maze);
-
 	var gen=generate(maze,x,y,closed);
 	while(gen.fin==false){
     	gen=generate(maze,x,y,closed);
@@ -175,7 +173,6 @@ function createmaze(sx,sy,sl,s,e,ox,oy){
     	y=gen.y;
     	closed=gen.closed;
 	}
-
 		if(e){
 			maze=doEdges(maze,sx,sy,sl,s,e);
 		} 
@@ -196,30 +193,43 @@ function createmaze(sx,sy,sl,s,e,ox,oy){
 ///*
 var x=0;
 var y=0;
+var visited=[[x,y]];
 //var s=Math.random();
-var s = 10;
+var s = "test";
+createmaze(Math.floor((x+2)/5),Math.floor((y+2)/5),0,s,true,-x,-y);
+createmaze(Math.floor((x+2)/5)+1,Math.floor((y+2)/5),0,s,true,-x,-y);
+createmaze(Math.floor((x+2)/5)-1,Math.floor((y+2)/5),0,s,true,-x,-y);
+createmaze(Math.floor((x+2)/5),Math.floor((y+2)/5)-1,0,s,true,-x,-y);
+createmaze(Math.floor((x+2)/5),Math.floor((y+2)/5)+1,0,s,true,-x,-y);
+createmaze(Math.floor((x+2)/5)+1,Math.floor((y+2)/5)+1,0,s,true,-x,-y);
+createmaze(Math.floor((x+2)/5)+1,Math.floor((y+2)/5)-1,0,s,true,-x,-y);
+createmaze(Math.floor((x+2)/5)-1,Math.floor((y+2)/5)+1,0,s,true,-x,-y);
+createmaze(Math.floor((x+2)/5)-1,Math.floor((y+2)/5)-1,0,s,true,-x,-y);
 $(document).ready(function(){
 	$(document).keydown(function(event){
     //document.write("hello");
     maze=createmaze(Math.floor((x+2)/5),Math.floor((y+2)/5),0,s,true,-x,-y);
-
         if(event.which==68){
-        	x+=5;
-        	//if((maze[2-(Math.floor((y+2)/5)*5-y)][2-(Math.floor((x+2)/5)*5-x)][1])==1){x+=1;}
+        	//x+=1;
+        	if((maze[2-(Math.floor((y+2)/5)*5-y)][2-(Math.floor((x+2)/5)*5-x)][1])==1){x+=1;}
         };
         if(event.which==65){
-        	x-=5;
-        	//if((maze[2-(Math.floor((y+2)/5)*5-y)][2-(Math.floor((x+2)/5)*5-x)][3])==1){x-=1;}
+        	//x-=1;
+        	if((maze[2-(Math.floor((y+2)/5)*5-y)][2-(Math.floor((x+2)/5)*5-x)][3])==1){x-=1;}
         };
         if(event.which==83){
-        	y+=5;
-        	//if((maze[2-(Math.floor((y+2)/5)*5-y)][2-(Math.floor((x+2)/5)*5-x)][2])==1){y+=1;}
+        	//y+=1;
+        	if((maze[2-(Math.floor((y+2)/5)*5-y)][2-(Math.floor((x+2)/5)*5-x)][2])==1){y+=1;}
         };
         if(event.which==87){
-        	y-=5;
-        	//if((maze[2-(Math.floor((y+2)/5)*5-y)][2-(Math.floor((x+2)/5)*5-x)][0])==1){y-=1;}
+        	//y-=1;
+        	if((maze[2-(Math.floor((y+2)/5)*5-y)][2-(Math.floor((x+2)/5)*5-x)][0])==1){y-=1;}
         }
         //var c=document.getElementById("myCanvas");
+        if(visited.containsArray([x,y])){
+        } else {
+        	visited.push([x,y]);
+        }
 		var ctx=c.getContext("2d");
         ctx.clearRect(0, 0, c.width, c.height);
         maze=createmaze(Math.floor((x+2)/5),Math.floor((y+2)/5),0,s,true,-x,-y);
@@ -231,8 +241,9 @@ $(document).ready(function(){
         createmaze(Math.floor((x+2)/5)+1,Math.floor((y+2)/5)-1,0,s,true,-x,-y);
         createmaze(Math.floor((x+2)/5)-1,Math.floor((y+2)/5)+1,0,s,true,-x,-y);
         createmaze(Math.floor((x+2)/5)-1,Math.floor((y+2)/5)-1,0,s,true,-x,-y);
-        
-        ctx.fillText(Math.floor((x+2)/5)+' '+Math.floor((y+2)/5)+' olu: '+Math.floor((Math.floor((x+2)/5)+2)/5)+' '+Math.floor((Math.floor((y+2)/5)+2)/5),10,25);
+        drawbg(Math.floor((x+2)/5),Math.floor((y+2)/5),-x,-y);
+        ctx.globalCompositeOperation='source-over';
+        ctx.fillText(Math.floor((x+2)/5)+' '+Math.floor((y+2)/5)+' olu: '+Math.floor((Math.floor((x+2)/5)+2)/5)+' '+Math.floor((Math.floor((y+2)/5)+2)/5)+' '+x+' '+y,10,25);
         
     });
 });
@@ -242,8 +253,9 @@ $(document).ready(function(){
 		
 /*
 //*/
+
 function draw(m,x,y,ox,oy){
-	x*=5
+    x*=5
 	y*=5
     siz=2;
 	x+=ox+2.5*siz-2.5;
@@ -256,7 +268,9 @@ function draw(m,x,y,ox,oy){
 	var ctx=c.getContext("2d");
 	
     ctx.lineWidth = w;
+    
     ctx.beginPath();
+    
     ctx.strokeStyle="#000000";
     ctx.fillStyle="#000000";
 	ctx.font = "30px Arial";
@@ -287,9 +301,21 @@ function draw(m,x,y,ox,oy){
 		}
 	}
     ctx.closePath();
+    
 	ctx.fillStyle=("#ff0000");
 	ctx.fillRect(226, 226, 48, 48);
+    
     //ctx.fillRect(c.width/2, c.height/2,siz*98,siz*98)
+}
+function drawbg(x,y,ox,oy){
+	ctx.globalCompositeOperation='destination-over';
+    for(var i=0; i<visited.length;i++){
+    	var color=Math.floor(((i/visited.length)*256)).toString(16);
+        //alert(Math.floor(((i/visited.length)*256)).toString(16));
+    	ctx.fillStyle=("#"+color+'dddd');
+        ctx.fillRect(225+(visited[i][0]+ox)*50,225+(visited[i][1]+oy)*50, 50, 50);
+    }
+    ctx.fillStyle=("#ff0000");
 }
 	</script>
 </html>
